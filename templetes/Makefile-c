@@ -1,0 +1,46 @@
+
+SRCDIR = ./src
+INCDIR = ./include
+BUILDDIR = ./build
+BINDIR = ./bin
+SCRIPTSDIR = ./scripts
+
+INSTBINDIR = /usr/local/bin
+
+CC = gcc
+CFLAGS = -Wall -g
+LDFLAGS = 
+LIBS = 
+
+EXEC = rf-run
+SRCS = $(wildcard $(SRCDIR)/*.c)
+INCS = $(wildcard $(INCDIR)/*.h)
+OBJS = $(patsubst $(SRCDIR)/%.c, $(BUILDDIR)/%.o, $(SRCS))
+
+
+all: $(OBJS) $(BINDIR)/$(EXEC)
+.PHONY: clean install
+
+
+# C project
+
+$(OBJS): $(BUILDDIR)/%.o: $(SRCDIR)/%.c $(INCS)
+	$(CC) $(CFLAGS) -I $(INCDIR) -c $< -o $@
+	
+$(BINDIR)/$(EXEC): $(OBJS) Makefile
+	$(CC) $(LDFLAGS) $(LIBS) -o $@ $(OBJS)
+
+
+
+
+# INSTALLATION
+install:
+	cp $(BINDIR)/* $(INSTBINDIR)/
+
+
+
+clean:
+	rm -f $(BINDIR)/* 
+	rm -f $(BUILDDIR)/*.o
+	
+

@@ -1,0 +1,33 @@
+(From within rescue mode)
+
+Command: ls
+
+It will list all your drives and partitions, like:
+
+(hd0) (hd0,msdos2) (hd0,msdos1)
+
+If you don't know your Ubuntu boot partition, check them one by one:
+
+ls (hd0,msdos2)/
+
+ls (hd0,msdos1)/
+
+When you hit the right one, you'll get a line mentioning "lost+found" an so on.
+
+Assuming (hd0,msdos2) is the right partition:
+
+set prefix=(hd0,2)/boot/grub
+
+set root=(hd0,2)
+
+insmod normal
+
+normal
+
+Now you'll be able to boot into Ubuntu. Once you do, execute the following commands:
+
+sudo update-grub
+
+sudo grub-install /dev/sda
+
+Voila.
